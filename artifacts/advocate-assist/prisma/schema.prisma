@@ -1,0 +1,129 @@
+// Advocate Assist — Prisma Schema
+// PRIVACY: NO tables for case files or documents — those stay on-device (Dexie).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // ── Onboarding state ─────────────────────────────────────────────────────
+  isOnboarded   Boolean   @default(false)
+
+  // Q1 — Role
+  isLegalPractitioner Boolean?
+
+  // Q2 — Contact
+  mobileNumber  String?
+
+  // Q3-Q6 — Identity
+  dateOfBirth   DateTime?
+  gender        String?
+  language      String?   @default("en")
+
+  // Q7-Q9 — Location
+  state         String?
+  city          String?
+  pinCode       String?
+
+  // Q10-Q16 — Practitioner details
+  practiceAreas     String?   // JSON array string
+  yearsOfExperience String?
+  courtsOfPractice  String?   // JSON array string
+  barCouncilNumber  String?
+  stateBarCouncil   String?
+  lawFirmName       String?
+
+  // Q10-Q16 — Client details
+  legalIssueType        String?
+  urgencyLevel          String?
+  consultedLawyerBefore Boolean?
+  hasOngoingProceedings Boolean?
+  budgetRange           String?
+  consultationMode      String?
+  hasDocuments          Boolean?
+
+  // Q17-Q20 — Preferences & referral
+  referralSource          String?
+  wantsWhatsAppUpdates    Boolean?  @default(false)
+  wantsSmsUpdates         Boolean?  @default(false)
+  wantsAdvocateConnection Boolean?  @default(false)
+  additionalNotes         String?
+
+  // Q21-Q23 — Consent (required)
+  termsAccepted         Boolean   @default(false)
+  dataConsentAccepted   Boolean   @default(false)
+  aiDisclaimerAccepted  Boolean   @default(false)
+
+  // Legacy / credit
+  personaType   String?
+  creditBalance Int       @default(0)
+
+  password              String?
+  passwordResetTokens   PasswordResetToken[]
+  accounts              Account[]
+  sessions              Session[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("password_reset_tokens")
+}

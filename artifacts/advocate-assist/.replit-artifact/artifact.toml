@@ -1,0 +1,36 @@
+kind = "web"
+previewPath = "/preview-dev/dashboard"
+title = "Advocate Assist"
+version = "1.0.0"
+id = "artifacts/advocate-assist"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24066
+
+[services.development]
+run = "pnpm --filter @workspace/advocate-assist run dev"
+
+[services.production.build]
+args = [ "pnpm", "--filter", "@workspace/advocate-assist", "run", "build" ]
+
+[services.production.run]
+args = [ "node", "artifacts/advocate-assist/.next/standalone/artifacts/advocate-assist/server.js" ]
+
+[services.production.run.env]
+PORT = "24066"
+NODE_ENV = "production"
+HOSTNAME = "0.0.0.0"
+
+[services.web.production.health.startup]
+path = "/api/healthz"
+
+[services.env]
+PORT = "24066"
+BASE_PATH = "/"

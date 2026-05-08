@@ -1,0 +1,48 @@
+{
+  "name": "@workspace/advocate-assist",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0",
+    "build": "prisma generate && next build && cp -r .next/static .next/standalone/artifacts/advocate-assist/.next/static && cp -r public .next/standalone/artifacts/advocate-assist/public",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push"
+  },
+  "dependencies": {
+    "@workspace/db": "workspace:*",
+    "@anthropic-ai/sdk": "^0.92.0",
+    "@auth/prisma-adapter": "^2.7.2",
+    "@google/genai": "^1.51.0",
+    "@langchain/anthropic": "^1.3.28",
+    "@langchain/core": "^1.1.44",
+    "@langchain/google-genai": "^2.1.30",
+    "@langchain/langgraph": "^1.2.9",
+    "@langchain/openai": "^1.4.5",
+    "@prisma/client": "^6.9.0",
+    "bcryptjs": "^3.0.3",
+    "dexie": "^4.4.2",
+    "dexie-react-hooks": "^4.4.0",
+    "lucide-react": "catalog:",
+    "next": "^15.3.1",
+    "next-auth": "^5.0.0-beta.25",
+    "nodemailer": "^8.0.7",
+    "openai": "^6.35.0",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.14",
+    "@types/bcryptjs": "^3.0.0",
+    "@types/node": "catalog:",
+    "@types/nodemailer": "^8.0.0",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "clsx": "catalog:",
+    "prisma": "^6.9.0",
+    "tailwind-merge": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "~5.9.2"
+  }
+}

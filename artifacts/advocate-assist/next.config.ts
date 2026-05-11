@@ -12,7 +12,6 @@ const allowedOrigins = [
 ];
 
 const nextConfig: NextConfig = {
-  output: "standalone",
   allowedDevOrigins: allowedOrigins,
 };
 

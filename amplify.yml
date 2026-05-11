@@ -10,8 +10,7 @@ applications:
             - pnpm install
         build:
           commands:
-            - pnpm --filter @workspace/advocate-assist run build
-            - mkdir -p artifacts/advocate-assist/node_modules && cp -rL node_modules/next artifacts/advocate-assist/node_modules/next
+            - pnpm --filter @workspace/advocate-assist run build && PNPM_ROOT=$(pnpm root -w) && mkdir -p artifacts/advocate-assist/node_modules && cp -rL ${PNPM_ROOT}/next artifacts/advocate-assist/node_modules/next
       artifacts:
         baseDirectory: artifacts/advocate-assist/.next
         files:

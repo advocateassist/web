@@ -11,7 +11,7 @@ applications:
         build:
           commands:
             - pnpm --filter @workspace/advocate-assist run build
-            - mkdir -p artifacts/advocate-assist/node_modules && ln -sf $(pwd)/node_modules/next artifacts/advocate-assist/node_modules/next
+            - mkdir -p artifacts/advocate-assist/node_modules && cp -rL node_modules/next artifacts/advocate-assist/node_modules/next
       artifacts:
         baseDirectory: artifacts/advocate-assist/.next
         files:

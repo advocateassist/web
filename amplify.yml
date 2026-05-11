@@ -1,0 +1,22 @@
+version: 1
+applications:
+  - appRoot: artifacts/advocate-assist
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - corepack enable
+            - cd ../.. && pnpm install
+            - pnpm install --prefer-offline
+        build:
+          commands:
+            - pnpm run build
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - ../../node_modules/**/*
+          - node_modules/**/*
+          - .next/cache/**/*

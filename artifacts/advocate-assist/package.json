@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
-    "build": "prisma generate && next build && cp -r .next/static .next/standalone/artifacts/advocate-assist/.next/static && cp -r public .next/standalone/artifacts/advocate-assist/public",
+        "build": "prisma generate && next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "db:generate": "prisma generate",

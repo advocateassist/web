@@ -2,22 +2,20 @@ version: 1
 applications:
   - appRoot: artifacts/advocate-assist
     frontend:
-      buildPath: /
       phases:
         preBuild:
           commands:
             - corepack enable
-            - pnpm install
+            - cd ../.. && pnpm install
         build:
           commands:
-            - pnpm --filter @workspace/advocate-assist run build
-            - pnpm --filter @workspace/advocate-assist deploy /tmp/deploy-out --prod
-            - cp -r /tmp/deploy-out/node_modules artifacts/advocate-assist/node_modules
+            - pnpm run build
       artifacts:
-        baseDirectory: artifacts/advocate-assist/.next
+        baseDirectory: .next
         files:
           - '**/*'
       cache:
         paths:
+          - ../../node_modules/**/*
           - node_modules/**/*
-          - artifacts/advocate-assist/.next/cache/**/*
+          - .next/cache/**/*
